@@ -8,15 +8,23 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
 
+  The first time I ran it, it was very buggy and confusing. I tested 0 as my first input and I didn't get an error message that it 
+  was out of range, which was odd. The history array wasn't updating and I had to put another input for my first input to show.
+  Afterwards, I had to click the "Submit Guess" button to get the correct hint and it defaulted to the "Too Low" hint for the first input. 
+
+  Concrete Bugs
+  - After losing a game, when clicking the "New Game" button, none of the variables in the developer log updated and nothing is indicated to the user that their game has reset. 
+  - If entering nothing, it appear in the history array as an empty string. It is allowed to go over a size of 7, however if a valid input is given and the array's length > 6, then the game is considered over. 
+
 **Bug Reproduction Log**
 
 Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| 0     | Received error message stating out of number range. | "Too Low" hint shown, the secret number was 76. History array didn't update. | "none"
+| 101 | Received error message stating out of number range. | "Too Low" hint shown, the secret number was 79. History array didn't update. | "none"
+| Clicked "New Game" button without finishing current game. | Variables in the devloper log would reset | Attempts left on user-side is set to 8, score is unchanged, history array is unchanged. Only the secret number is chaned from the previous game. | "none"
 
 ---
 
