@@ -43,12 +43,14 @@
 ```
 <!-- Paste the prompt you gave the AI -->
 ```
+Add color-coded text for the "Too Low" and "Too High" hints. Additonally, add a summary table of the game's session with what the user had previosly guessed when the game ends.
 
 **Linting output before:**
 
 ```
 <!-- Paste relevant linter warnings/errors -->
 ```
+There were no linter warnings/errors.
 
 **Changes applied:**
 

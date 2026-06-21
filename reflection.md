@@ -60,6 +60,8 @@ showed me that I should test for all edge cases and not just the intended output
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 
 ---
+Streamlit is like running a Python script locally, so a Streamlit "rerun" will "rerun"
+your code with everything refreshed. In this project, it means restarting the number guessing game with a new secret number, the inital number of attempts, and a new history array. However, to remember variables between reruns, you can use a session state for each user session. For example, if you want to remember a player's name between user sessions, you can use a session state. 
 
 ## 5. Looking ahead: your developer habits
 
@@ -67,3 +69,8 @@ showed me that I should test for all edge cases and not just the intended output
   - This could be a testing habit, a prompting strategy, or a way you used Git.
 - What is one thing you would do differently next time you work with AI on a coding task?
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+One habit I want to reuse is becoming a better tester by not only including the edge cases, but by including tests for how project is normally ran. When testing this project at the begining, I felt like I tested more edge cases than usual cases. 
+However, a majority of the time, the game will run as usual, so I should keep that in mind. 
+
+This project made me think about the possible ways that AI can be used to generate tests for different projects. I don't think that this usecase for AI is talked about enough and I think that's more talk about vibecoding.

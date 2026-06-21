@@ -28,18 +28,28 @@ It wrote the code, ran away, and now the game is unplayable.
 - [ ] Describe the game's purpose.
 - [ ] Detail which bugs you found.
 - [ ] Explain what fixes you applied.
+ Game Glitch Investigator is a number guessing game where your objective is to 
+ guess the secret number in a limited number of attempts. There are optional hints 
+ to tell you if your guess was higher or lower than the actual number and a restart
+ button to play the game again. There are three diffculties: Easy, Normal, and Hard to try out. 
 
+I found several bugs, including not checking if the number was out of range, the variables not resetting when the "New Game" button is clicked, and the hints not properly showing up. Now, the current code will check if the number is within range.
+It will not consider it an attempt if it is out of range. The variables are reset 
+when the "New Game" button is clicked, so the session is properly reset. Finally, 
+the hints show up at the right time and aren't delayed by one now. 
 ## 📸 Demo Walkthrough
 
 Describe your fixed game in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+Assumes that the secret number is 63
+1. User enters a guess of 34 -> Game returns "Too Low"
+2. User enters a guess of 89 -> Game returns "Too High"
+3. Score will decrease by 5 if the guess is wrong
+4. The game will after if the user enters the secret number or runs out of attempts
+5. The "New Game" can be clicked to restart the game 
 
-**Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
+**Screenshot** *(optional)*: 
+![Game Won](image.png)
 
 ## 🧪 Test Results
 
@@ -49,6 +59,10 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 # ========================= X passed in 0.XXs =========================
 ```
 
+
 ## 🚀 Stretch Features
 
 - [ ] [If you choose to complete Challenge 4, describe the Enhanced UI changes here — a screenshot is optional]
+After making a guess, it also displays different temperatures. If the guess is within 10%, it is hot. If it's within 25%, it is warm. Otherwise, it is cold. When there are no attempts left or the player guessed the correct number, it shows a game summary
+with stats like current score, total guesses, result, and distance from the secret number.
+![alt text](image-1.png)

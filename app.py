@@ -1,6 +1,22 @@
 import random
 import streamlit as st
+import pandas as pd
 from logic_utils import get_range_for_difficulty, parse_guess, check_guess, update_score
+
+
+def get_temperature(guess, secret, range_size):
+    """Return 'hot', 'warm', or 'cold' based on distance from secret."""
+    distance = abs(guess - secret)
+    threshold_hot = range_size * 0.1  # Within 10% is hot
+    threshold_warm = range_size * 0.25  # Within 25% is warm
+    
+    if distance <= threshold_hot:
+        return "🔥 VERY HOT!"
+    elif distance <= threshold_warm:
+        return "🌡️ WARM"
+    else:
+        return "❄️ COLD"
+
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
@@ -114,7 +130,18 @@ if submit:
         outcome, message = check_guess(guess_int, secret)
 
         if st.session_state.show_hint:
-            st.warning(message)
+            # Color-coded feedback
+            if outcome == "Too High":
+                st.error(message)
+            elif outcome == "Too Low":
+                st.success(message)
+            else:  # Win
+                st.success(message)
+            
+            # Show temperature (hot/cold) indicator
+            range_size = high - low
+            temperature = get_temperature(guess_int, st.session_state.secret, range_size)
+            st.info(f"Temperature: {temperature}")
 
         st.session_state.score = update_score(
             current_score=st.session_state.score,
@@ -137,6 +164,51 @@ if submit:
                     f"The secret was {st.session_state.secret}. "
                     f"Score: {st.session_state.score}"
                 )
+
+# Display game session summary table only when game ends
+if st.session_state.status in ["won", "lost"]:
+    st.divider()
+    st.subheader("📊 Game Session Summary")
+
+    if st.session_state.history:
+        # Create summary data
+        summary_data = []
+        for idx, guess in enumerate(st.session_state.history, 1):
+            range_size = high - low
+            distance = abs(guess - st.session_state.secret)
+            temperature = get_temperature(guess, st.session_state.secret, range_size)
+            
+            # Determine if guess was correct, too high, or too low
+            if guess == st.session_state.secret:
+                result = "✅ Correct"
+            elif guess > st.session_state.secret:
+                result = "⬇️ Too High"
+            else:
+                result = "⬆️ Too Low"
+            
+            summary_data.append({
+                "Attempt": idx,
+                "Guess": guess,
+                "Result": result,
+                "Distance": distance,
+                "Temperature": temperature
+            })
+        
+        df = pd.DataFrame(summary_data)
+        st.dataframe(df, use_container_width=True, hide_index=True)
+        
+        # Display game stats
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Total Guesses", len(st.session_state.history))
+        with col2:
+            st.metric("Current Score", st.session_state.score)
+        with col3:
+            attempts_left = attempt_limit - st.session_state.attempts
+            st.metric("Attempts Left", max(0, attempts_left))
+    else:
+        st.info("No guesses yet. Make your first guess to get started!")
+
 
 st.divider()
 st.caption("Built by an AI that claims this code is production-ready.")
