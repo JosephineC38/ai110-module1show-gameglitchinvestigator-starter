@@ -26,6 +26,36 @@ Document at least 3 bugs you found. Add rows as needed.
 | 101 | Received error message stating out of number range. | "Too Low" hint shown, the secret number was 79. History array didn't update. | "none"
 | Clicked "New Game" button without finishing current game. | Variables in the devloper log would reset | Attempts left on user-side is set to 8, score is unchanged, history array is unchanged. Only the secret number is chaned from the previous game. | "none"
 
+AI Explanation of a Bug
+The Bug Explanation
+The Core Issue: There's a type-alternation bug in app.py that corrupts the secret comparison:
+
+if st.session_state.attempts % 2 == 0:
+    secret = str(st.session_state.secret)  # ← CONVERTS TO STRING on even attempts
+else:
+    secret = st.session_state.secret       # ← STAYS INTEGER on odd attempts
+
+What happens with input 0 on attempt 1 (odd):
+
+guess_int = 0 (integer, valid)
+secret = 76 (integer, because attempt 1 is odd)
+check_guess(0, 76) runs
+Numeric comparison: 0 > 76? → No
+Returns: "Too Low", "📉 Go LOWER!" ✗ (Should have been rejected as out of range!)
+The real problem: The validation check if ok and (guess_int < low or guess_int > high) was NOT in the original code (it was added later with the FIX comment). Without that validation, out-of-range guesses like 0 went straight to check_guess, which treated them as valid guesses instead of rejecting them.
+
+On attempt 2 (even) - the TypeError path triggers:
+
+secret = str(76) → "76" (now a string!)
+check_guess(50, "76") tries: 50 > "76"? → TypeError!
+Falls into the except block, converts: g = str(50) → "50"
+String comparison: "50" > "76"? → True (lexicographic, not numeric!)
+Returns wrong result: "Too High" instead of correct numeric comparison
+Root causes:
+
+✗ Missing range validation (fixed in current code)
+✗ Alternating secret type breaks numeric comparisons and triggers string comparisons
+This explains why the history array didn't update and hints were incorrect—the guess should have been rejected before reaching check_guess at all.
 ---
 
 ## 2. How did you use AI as a teammate?
