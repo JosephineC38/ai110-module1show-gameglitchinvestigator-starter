@@ -35,6 +35,11 @@ Document at least 3 bugs you found. Add rows as needed.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
 ---
+I used the built-in GitHub Copilot mode. One example of when an AI suggestion was correct was when it fixed the out of range error giving 
+the incorrect "Too Low" hint. I verfied it by testing both 0 and 101, which were out of range, mutiple times to see if it worked correctly.
+I also attempted to play the game as usual to see if the rest of the game worked. One example of an AI suggestion that didn't work
+was fixing the hints pop on. Previosuly, you had to click the "Submit Guess" button twice for the correct hint to appear. However, because 
+of the AI suggested change, it switched around the "Too Low" and "Too High" hints and removed an emoji. I manually fixed it and tested it through playing the game as normal to see if the hints were properly given. 
 
 ## 3. Debugging and testing your fixes
 
@@ -44,6 +49,11 @@ Document at least 3 bugs you found. Add rows as needed.
 - Did AI help you design or understand any tests? How?
 
 ---
+I tested if a bug was truly fixed by testing the game multiple times in different situtations. For example, when testing
+the "Out of Range" error, I tested many inputs outside of the 0 to 100 range, instead of just 0 and 101. Furthermore, I had 
+basic in-range inputs like 23 or 60, to see if the game worked normally and repeated them after clicking the "New Game" button.
+One test I ran with pytest was testing if the input was a number or not. When I ran the pytest, it came back functional, which
+showed me that I should test for all edge cases and not just the intended output. As the test states "Guess a number between 1 and 100.", that means it should actually be a number. The AI helped me design certain edge cases like if the number inputted by the user was out of range or not with different difficulties. It used the numbers I tested from the Bug Reproduction Log to see if the "Out of Range" error occurred or not. While I still manually tested it, it helped remind me of what I needed to test and the different possibilities.
 
 ## 4. What did you learn about Streamlit and state?
 
